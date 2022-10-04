@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}home{% endblock title %}
+{% block link %}<a href="/">Main page</a> | <a href="addManga">Add new manga</a>{% endblock link %}
+{% block header %}Main page{% endblock header %}
+{% block content%}
+    {% if manga.count > 0 %}
+    <h2>Manga list:</h2>
+    <table>
+        <thead><th>Id</th><th>Name</th><th>Author</th><th>Price</th><th></th></thead>
+        {% for manga in manga %}
+        <tr>
+            <td>{{ manga.id }}</td>
+            <td>{{ manga.name }}</td>
+            <td>{{ manga.author }}</td>
+            <td>{{ manga.price }}</td>
+            <td><a href="edit/{{manga.id}}">Change</a> | <a href="delete/{{manga.id}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+{% endblock content %}
