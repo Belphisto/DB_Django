@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}cart add{% endblock title %}
+{% block link %}<a href="/">Main page</a>{% endblock link %}
+{% block header %}Add to Cart {% endblock header %}
+{% block content%}
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <a href="#">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <input type="submit" value="Add" name="add" >
+     </a>
+</form>
+{% endblock content %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}home{% endblock title %}
+{% block link %}<a href="/">Main page</a>  | <a href="cart_detail" class = 'cart'> Cart </a>  {% if role != 0 %}| <a href="addManga">Add new manga</a> {% endif %} | 
+{% if role == 0 %}<a href="reg">Registration</a> | <a href="login" class = "Login">Login</a> |{% endif %} 
+{% if role != 0 %} <a href="user_logout" class = "user_logout">Logout</a> | <a href="user_edit ">edit Profile</a> | <a href="allOrders" class="allOrders">all Orders</a>{% endif %} 
+{% endblock link %}
+{% block header %}Main page{% endblock header %}
+{% block content%}
+    <h2 class="neonText">Manga list: {{manga.count}}</h2>
+    <table>
+        <thead><th class="neonText">Id </th><th>     </th><th>Name </th><th>     </th><th>Author </th><th>   </th><th>Price </th><th></th> <th></th></thead>
+        {% for manga in page_obj %}
+        <tr>
+            <td>{{ manga.id }}  </td>
+            <th>    </th>
+            <td>{{ manga.name }}    </td>
+            <th>    </th>
+            <td>{{ manga.author }}  </td>
+            <th>    </th>
+            <td>{{ manga.price }}   </td>
+            <td><a href="add_to_cart/{{manga.id}}" name ="addtocart"> Add to cart </a></td>
+            
+            {% if role == 1 %}<td><a href="editManga/{{manga.id}}">Change</a> | <a href="delete/{{manga.id}}">Delete</a></td> {% endif %} 
+        </tr>
+        {% endfor %}
+    </table>
+
+    <form method="POST" class="search_form">
+        {% csrf_token %}
+        <table>
+            <input id="id_search_by_price" class="search_by_price" type="text" name="search_by_price" maxlength="10">
+        </table>
+        <input type="submit" value="Find by price" name="findby" >
+        </form>
+
+    <!-- Это пагинация -->
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">« Previous page</a>
+        {% if page_obj.number > 3 %}
+            <a href="?page=1">1</a>
+            {% if page_obj.number > 4 %}
+                <span>...</span>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <a href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+            <span>...</span>
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+
+        <a href="?page={{ page_obj.next_page_number }}">Next Page »</a>
+    {% endif %}
+
+    <!-- это еще один вариант пагинации
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    -->
+
+{% endblock content %}

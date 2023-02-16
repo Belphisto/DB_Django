@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Create order{% endblock title %}
+{% block link %}<a href="/">Main page</a>{% endblock link %}
+{% block header %}Checkout{% endblock header %}
+{% block content%}
+    <div>
+        <h3> Your Order: </h3>
+        <ul>
+            {%for item in cart%}
+            <li>
+                {{item.quantity}} x {{item.manga.name}}
+                <span>${{item.total_price}}</span>
+            </li>
+            {%endfor%}
+        </ul>
+        <p> Total: ${{cart.get_total_price}} </p>
+    </div>
+
+    <form action='.'method="post">
+        {{form.as_p}}
+        <p><input type="submit" value="Create Order" name='create'></p>
+        {%csrf_token%}
+    </form>
+{% endblock content %}

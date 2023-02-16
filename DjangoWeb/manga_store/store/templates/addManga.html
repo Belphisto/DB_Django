@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}addManga{% endblock title %}
+{% block link %} <a href="/">Main page</a>{% endblock link %}
+{% block header %}add Manga page{% endblock header %}
+{% block content %}
+<form method="POST" action="{% url 'add_manga' %}">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <a href="#">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <input type="submit" value="Create" >
+     </a>
+</form>
+{% endblock content %}

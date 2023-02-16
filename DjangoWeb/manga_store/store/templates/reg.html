@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}reg{% endblock title %}
+{% block link %} <a href="/">Main page</a>{% endblock link %}
+{% block header %}Registration page{% endblock header %}
+{% block content %}
+<form method="POST" action="{% url 'reg' %}" class="RegForm">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <a href="#">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <input type="submit" value="register" >
+     </a>
+</form>
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    $(document).ready(
+        function() {
+            $('.login').on(
+                'input',
+                function() {
+                    $.ajax({
+                        data:$(this).serialize(),
+                        url: "{% url 'validate_login' %}",
+                        success: function(responce) {
+                            if (responce.is_taken == true) {
+                                var form = document.querySelector(".RegForm")
+                                console.log("login")
+                                var error = document.createElement('div')
+                                var login = form.querySelector('.login')
+                                error.className='logerror'
+                                error.style.color = 'red'
+                                error.innerHTML = 'Your login is taken'
+                                login.parentElement.insertBefore(error, login)
+                            } else {
+                                error = $('.logerror')
+                                if (error != null) error.remove()
+                            }
+                        }
+                    })
+                }
+            )
+            return false;
+        }
+    )
+</script>
+
+<script>
+    var form = document.querySelector(".RegForm")
+    form.addEventListener('input', function (event) {
+    event.preventDefault()
+    console.log('clicked on validate')
+
+    var password = form.querySelector('.password')
+    var email = form.querySelector('.mail')
+    var regex = new RegExp('([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+    var error = form.querySelector('.emailerror')
+    if (error != null) error.remove()
+    var error = form.querySelector('.passworderror')
+    if  (error != null) error.remove()
+
+    if (password.value.length < 10){
+        var error = document.createElement('div')
+        error.className='passworderror'
+        error.style.color = 'red'
+        error.innerHTML = 'Password length should be more than 10'
+        password.parentElement.insertBefore(error, password)
+        console.log('password length is lesser than 10')
+    }
+
+    if (!regex.test(email.value)) {
+        console.log('Email is invalid1')
+        var error = document.createElement('div')
+        error.className='emailerror'
+        error.style.color = 'red'
+        error.innerHTML = 'Email is invalid2'
+        email.parentElement.insertBefore(error, email)
+    }
+    })
+</script>
+
+{%endblock javascript%}

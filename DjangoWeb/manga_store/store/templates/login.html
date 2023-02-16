@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}login{% endblock title %}
+{% block link %} <a href="/">Main page</a>{% endblock link %}
+{% block header %}Log in page{% endblock header %}
+{% block content %}
+<form method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <a href="#">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <input type="submit" value="Log in" class = 'login'>
+     </a>
+</form>
+{% endblock content %}

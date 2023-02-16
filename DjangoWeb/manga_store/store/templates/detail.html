@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Cart{% endblock title %}
+{% block link %}<a href="/">Main page</a>{% endblock link %}
+{% block header %}Cart detail page{% endblock header %}
+{% block content%}
+    <h1>Your Shopping Cart: </h1>
+    <table >
+
+        <thead>
+            
+                <th>Manga</th>
+                <th>Quantity</th>
+                <th>Remove</th>
+                <th>Unit Price</th>
+                <th>Price</th>
+            
+        </thead>
+        
+        <tbody>
+            {% for item in cart%}
+                {% with manga=item.manga %}
+                    <tr>
+                        <td>{{manga.name}}</td>
+                        <!--<td>{{item.quantity}}</td>-->
+                        <td>
+                            <form action="{%url "cart_add" manga.id%}" method ="post">
+                                {{item.update_quantity_form.quantity}}
+                                {{item.update_quantity_form.update}}
+                                <input type ="submit" value="Update">
+                                {% csrf_token %}
+                            </form>
+                        </td>
+                        <td> <a href="{% url "cart_remove" manga.id %}"> Remove </a> </td>
+                        <td >${{item.price}} </td>
+                        <td >${{item.total_price}} </td>
+                    </tr>
+                {% endwith %}
+            {%endfor%}
+            <tr class = "total">
+                <td> Total </td>
+                <td colspan="4"></td>
+                <td class "num">${{cart.get_total_price}}</td>
+            </tr>
+        </tbody> 
+    </table>
+    {% if cart.get_total_price != 0%}
+    <a href ="{%url "order_create"%}" class="button" name = "create"> Create Order </a>
+    {%endif%}
+{% endblock content %}

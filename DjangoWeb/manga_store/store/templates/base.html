@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8" />
+    
+    <!--<link rel="stylesheet" href="{% static "css/fon.css" %}" />-->
+    <title>{% block title %}Default title{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "css/neon_button.css" %}" />
+    <link rel="stylesheet" href="{% static "css/textneon.css" %}" /> 
+    
+    <style> .primer1 {color: #FF00AA;}</style>
+    <style>  div { color: rgb(254, 254, 254);}</style>
+    <style>  h1 { color: rgb(254, 254, 254);}</style>
+    <style> .num {mso-number-format:General;}</style>
+
+</head>
+<body>
+    <div>{% block link %}{% endblock link %}</div>
+    <h1 class="neonText">{% block header %}{% endblock header %}</h1>
+    <div>{% block content%}{% endblock content %}</div>
+    <div class="neonText">{% block javascript %} {% endblock javascript %}</div>
+    <div class="neonText">Blinova Elena, KE-304</div>
+
+</body>
+</html>
